@@ -46,7 +46,7 @@ bool WifiClient::connectToWiFi(const char* wifi_ssid, const char* wifi_pass, con
 
 	if (wifi_status != WL_CONNECTED) {
 		nlog("Could not connect to WiFi network with SSID: ", wifi_ssid);
-		nlog("Reason code: ", (int)WiFi.reasonCode(), "WiFi status: ", wifiStatusToString(wifi_status));
+		nlog("Reason code: ", (int)WiFi.reasonCode(), " WiFi status: ", wifiStatusToString(wifi_status));
 		return false;
 	} else {
 		nlog("Connected to WiFi network");
@@ -54,6 +54,9 @@ bool WifiClient::connectToWiFi(const char* wifi_ssid, const char* wifi_pass, con
 			printCurrentNet();
 			printWifiData();
 		}
+		// Ping server
+		// ping("smartmirror7.ks.techfak.uni-bielefeld.de");
+
 		return true;
 	}
 

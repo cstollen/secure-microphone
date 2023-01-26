@@ -81,13 +81,16 @@ void nlog(Args... args) {
 const bool verbose = false;
 const bool enable_wifi = true;
 const bool enable_network_stream = true;
-const bool enable_ssl = true;
+const bool enable_ssl = (SERVER_SSL == 1) ? true : false;
 const bool enable_testdata = false;
 const bool enable_printdata = false;
 const bool enable_hotword_recognition = true;
 const bool enable_serial_connection = true;
 const bool enable_remote_logging = true;
 const bool enable_serial_logging = true;
+
+// Server connection status
+bool server_connected = false;
 
 // Hotword recognition or audio streaming mode
 bool hotword_mode = true;
@@ -226,13 +229,15 @@ void setup() {
 
 void loop() {
 	if (enable_network_stream) {
-		if (!wifi_client->connected()) {
+		// if (!wifi_client->connected()) {
+		if (!server_connected) {
 			if (enable_ssl) {
 				wifi_client->disconnectSSL();
 				wifi_client->connectSSL(server_url, server_port);
 			} else {
 				wifi_client->connectTCP(server_url, server_port, RETRIES, verbose);
 			}
+			server_connected = true;
 		}
 	}
 

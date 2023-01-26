@@ -1,11 +1,12 @@
 import socket
 import ssl
+import array
 
 #SERVER = "hoegarden.techfak.uni-bielefeld.de"
 SERVER= "0.0.0.0"
 PORT = 55555
-CERT_FILE = "../secure-mic-monitor/cert/ssl-cert.pem"
-KEY_FILE = "../secure-mic-monitor/cert/ssl-key.pem"
+CERT_FILE = "cert/ssl-cert.pem"
+KEY_FILE = "cert/ssl-key.pem"
 BUFFER_SIZE = 255
 
 context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
@@ -13,6 +14,10 @@ context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
 context.load_cert_chain(CERT_FILE, KEY_FILE)
 
 # https://docs.python.org/3/library/socket.html#socket.socket.listen
+
+# Generate SSL certificate and key file
+# cd secure-microphone/secure-mic/cert
+# openssl req -nodes -new -x509 -days 3650 -extensions v3_ca -keyout ssl-key.pem -out ssl-cert.pem -subj /CN=smartmirror7.ks.techfak.uni-bielefeld.de
 
 # Flash existing certificate to rp2040
 # cd secure-microphone/secure-mic
@@ -42,6 +47,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0) as sock:
 #with socket.socket(socket.AF_INET, socket.SOCK_DGRAM, 0) as sock:
 #	sock.bind(('127.0.0.1', PORT))
 #	sock.close()
+	sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 	sock.bind((SERVER, PORT))
 	sock.listen(backlog)
 	with context.wrap_socket(sock, server_side=True) as ssock:
@@ -56,11 +62,17 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0) as sock:
 
 		try:
 			while True:
-				message = conn.recv(BUFFER_SIZE)
+				message_bytes = conn.recv(BUFFER_SIZE)
 				#data = uint16.from_bytes(message)
-				data = int.from_bytes(message, byteorder='little', signed=False)
-				print("raw:")
-				print(message)
+				#data = int.from_bytes(message, byteorder='little', signed=False)
+				# data = []
+				# for i in range(0, len(message), 2):
+				# 	data.append(int.from_bytes(message[i:i+1]))
+				if len(message_bytes) == 0:
+					continue
+				data = array.array('H', message_bytes)
+				print("bytes:")
+				print(message_bytes)
 				print("uint16:")
 				print(data)
 		except KeyboardInterrupt:
