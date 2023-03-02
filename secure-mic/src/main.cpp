@@ -86,6 +86,7 @@ const bool enable_testdata = false;
 const bool enable_printdata = false;
 const bool enable_hotword_recognition = true;
 const bool enable_serial_connection = true;
+const bool enable_serial_connection_wait = false;
 const bool enable_remote_logging = true;
 const bool enable_serial_logging = true;
 
@@ -168,8 +169,10 @@ void setup() {
 		// Init serial interface
 		Serial.begin(serial_baudrate);
 		// Wait for serial connection
-		while (!Serial)
-			;
+		if (enable_serial_connection_wait) {
+			while (!Serial)
+				;
+		}
 	}
 
 	// Turn off builtin led

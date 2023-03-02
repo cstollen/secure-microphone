@@ -3,4 +3,5 @@
 build
 tools
 config/config.ini
-cert/*.pem
+cert/**
+bak/**
