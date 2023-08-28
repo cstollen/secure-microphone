@@ -2,3 +2,5 @@
 build
 config/config.ini
 cert/*.pem
+/audio_stream_*
+
