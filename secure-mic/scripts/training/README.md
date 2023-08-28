@@ -21,3 +21,7 @@
 [TensorFlow Archive](https://github.com/tensorflow/tensorflow/archive/v1.15.5.tar.gz)
 [TensorFlow Speech Commands Example](https://github.com/tensorflow/tensorflow/tree/r1.15/tensorflow/examples/speech_commands)
 Train subfolder: tensorflow-1.15.5/tensorflow/examples/speech_commands
+
+## Dependencies
+- Building Python 3.7
+	- Needed for ipython notebook: Apt package `libsqlite3-dev`

@@ -62,7 +62,7 @@ if [[ "$PY_INSTALL" -eq "1" && -z "$(which $PY_CMD)" ]]; then
   cd ${PYTHON_STR}
   echo -e "\nBuilding python3" &>> $LOG_FILE
   echo -e "────────────────" &>> $LOG_FILE
-  ./configure --prefix=${PYTHON_INSTALL_DIR} &>> $LOG_FILE
+  ./configure --enable-optimizations --prefix=${PYTHON_INSTALL_DIR} &>> $LOG_FILE
   make &>> $LOG_FILE
   make install &>> $LOG_FILE
 else
@@ -79,16 +79,16 @@ TF_PACKAGE="tensorflow"
 TF_VERSION="1.15.5" # Version used in repo: 1.15
 $PY_CMD -m venv $PYTHON_VENV_DIR &>> $LOG_FILE \
 && source $PYTHON_VENV_DIR/bin/activate &>> $LOG_FILE \
-&& pip install ipykernel notebook wget $TF_PACKAGE==$TF_VERSION &>> $LOG_FILE
+&& pip install notebook wget $TF_PACKAGE==$TF_VERSION &>> $LOG_FILE
 # pip install jupyter_contrib_nbextensions ipykernel notebook numpy matplotlib
 SETUP_PY_VENV_RET=$?
 deactivate &>> $LOG_FILE
 echo -ne $REMOVE_THREE_DOTS
 if [[ $SETUP_PY_VENV_RET -ne 0 ]]; then
-  echo -e "\nSetup python successful" &>> $LOG_FILE
+  echo -e "\nSetup python failed" &>> $LOG_FILE
   echo -e  "${FAILED}  $(getElapsedTimeStr $SECONDS)"
   exit 1
 fi
-echo -e "\nSetup python failed" &>> $LOG_FILE
+echo -e "\nSetup python successful" &>> $LOG_FILE
 echo -e "${CHECK_MARK}  $(getElapsedTimeStr $SECONDS)"
 exit 0
