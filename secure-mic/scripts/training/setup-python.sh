@@ -79,8 +79,8 @@ TF_PACKAGE="tensorflow"
 TF_VERSION="1.15.5" # Version used in repo: 1.15
 $PY_CMD -m venv $PYTHON_VENV_DIR &>> $LOG_FILE \
 && source $PYTHON_VENV_DIR/bin/activate &>> $LOG_FILE \
-&& pip install notebook $TF_PACKAGE==$TF_VERSION &>> $LOG_FILE
-# pip install jupyter_contrib_nbextensions ipykernel numpy matplotlib
+&& pip install ipykernel notebook wget $TF_PACKAGE==$TF_VERSION &>> $LOG_FILE
+# pip install jupyter_contrib_nbextensions ipykernel notebook numpy matplotlib
 SETUP_PY_VENV_RET=$?
 deactivate &>> $LOG_FILE
 echo -ne $REMOVE_THREE_DOTS
