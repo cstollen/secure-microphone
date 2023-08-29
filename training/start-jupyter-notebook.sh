@@ -23,9 +23,6 @@ fi
 
 # Activate anaconda python virtual environment
 VENV_DIR="$ROOT_DIR/venv"
-# conda init bash
-# eval $(conda shell.bash hook)
-# source ~/.bashrc
 # conda shell.bash activate $VENV_DIR
 conda activate $VENV_DIR
 
@@ -34,9 +31,7 @@ conda activate $VENV_DIR
 cd $ROOT_DIR
 TRAIN_SCRIPT="train_micro_speech_model.ipynb"
 jupyter notebook --no-browser --port 9999
-# conda shell.bash deactivate
 conda deactivate
 
-# Appendix
-# Check for tensorflow microfrontend
-# python3 -c "import tensorflow.lite.experimental.microfrontend.python.ops"
+# Tunnel jupyter notebook port to localhost
+# ssh twix -L 9999:localhost:9999

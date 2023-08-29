@@ -77,8 +77,6 @@ if [[ "$BUILD_PYTHON" -eq "1" ]]; then
   echo -e "────────────────────────────────" &>> $LOG_FILE
   TF_PACKAGE="tensorflow"
   # TF_PACKAGE="tensorflow-gpu"
-  # TF_VERSION="2.13.0" # Current stable version
-  # TF_VERSION="2.12.0" # Current stable gpu version
   TF_VERSION="1.15.5" # Version used in repo: 1.15
   # TF_VERSION="1.14.0" # Last old tf version available with anaconda
   $PY_CMD -m venv $PYTHON_VENV_DIR &>> $LOG_FILE \
@@ -89,7 +87,7 @@ if [[ "$BUILD_PYTHON" -eq "1" ]]; then
   deactivate &>> $LOG_FILE
 fi
 
-# Tensorflow wheel
+# Tensorflow wheel URL
 # https://files.pythonhosted.org/packages/9a/51/99abd43185d94adaaaddf8f44a80c418a91977924a7bc39b8dacd0c495b0/tensorflow-1.15.5-cp37-cp37m-manylinux2010_x86_64.whl
 
 # Setup Python virtual environment with conda
@@ -101,9 +99,10 @@ TF_VERSION="1.15.5" # Version used in repo: 1.15
 conda create --yes --quiet --prefix=$PYTHON_VENV_DIR python=3.7 &>> $LOG_FILE
 
 # Install packages into virtual environment
-conda activate $PYTHON_VENV_DIR
-pip install $TF_PACKAGE==$TF_VERSION notebook jupyter_contrib_nbextensions matplotlib wget &>> $LOG_FILE
-conda deactivate
+export PATH=$PATH:$(realpath $(dirname $(which conda))/../bin)
+source activate $PYTHON_VENV_DIR &>> $LOG_FILE
+pip install protobuf==3.20.* $TF_PACKAGE==$TF_VERSION notebook jupyter_contrib_nbextensions matplotlib wget &>> $LOG_FILE
+conda deactivate &>> $LOG_FILE
 
 echo -ne $REMOVE_THREE_DOTS
 if [[ $SETUP_PY_VENV_RET -ne 0 ]]; then
