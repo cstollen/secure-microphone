@@ -4,3 +4,7 @@
 /dataset
 /speech_dataset
 /jupyter_train_log.txt
+/.ipynb_checkpoints
+/tensorflow
+__pycache__
+
