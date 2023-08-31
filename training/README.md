@@ -25,3 +25,6 @@ Train subfolder: tensorflow-1.15.5/tensorflow/examples/speech_commands
 ## Dependencies
 - Building Python 3.7
 	- Needed for ipython notebook: Apt package `libsqlite3-dev`
+
+## Jupyter Notebook
+- token: 5e630152f8e7e1084e98f7e80786df8bf1cf5fd90eef68fb
