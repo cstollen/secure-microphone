@@ -1,0 +1,4 @@
+Float model is 180068 bytes
+Quantized model is 46736 bytes
+Float model accuracy is 79.264706% (Number of test samples=4080)
+Quantized model accuracy is 79.166667% (Number of test samples=4080)
