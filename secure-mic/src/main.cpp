@@ -249,8 +249,12 @@ void loop() {
 		const char* hotword = recognizeHotwords(score);
 		if (hotword != "" && hotword != "silence") {
 			nlog("Hotword: ", hotword);
+			nlog("  Score: ", static_cast<unsigned>(score));
 			if (hotword == "up") {
 				nlog("Keyword \"up\"");
+			}
+			if (hotword == "marvin") {
+				nlog("Keyword \"marvin\"");
 				nlog("Switching to audio streaming mode");
 				hotword_mode = false;
 			}

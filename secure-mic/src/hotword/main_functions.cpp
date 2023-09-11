@@ -242,6 +242,10 @@ const char* recognizeHotwords(uint8_t &hotword_score) {
 	if (is_new_command) {
 		hotword_score = score;
 		return found_command;
+		// char score_command[16];
+		// sprintf(score_command, "%03d %s", (unsigned)score, found_command);
+		// sprintf(score_command, "%d", (unsigned)score);
+		// return (const char*)score_command;
 	} else {
 		hotword_score = 0;
 		return "";

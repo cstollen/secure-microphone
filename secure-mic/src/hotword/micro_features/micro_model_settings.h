@@ -35,7 +35,9 @@ constexpr int kFeatureSliceStrideMs = 20;
 constexpr int kFeatureSliceDurationMs = 30;
 
 // Variables for the model's output categories.
-#define WORDCOUNT 8
+//#define WORDCOUNT 8 // Demo hotwords: yes,no,up,down,left,right,on,off
+//#define WORDCOUNT 1 // SmartMirror hotword: marvin
+#define WORDCOUNT 9 // 9words (8 demo words + marvin hotword): yes,no,up,down,left,right,on,off,marvin
 constexpr int kSilenceIndex = 0;
 constexpr int kUnknownIndex = 1;
 // If you modify the output categories, you need to update the following values.

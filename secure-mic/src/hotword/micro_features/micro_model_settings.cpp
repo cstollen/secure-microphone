@@ -15,6 +15,30 @@ limitations under the License.
 
 #include "micro_features/micro_model_settings.h"
 
+#if WORDCOUNT == 1 // SmartMirror hotword: marvin
+const char* kCategoryLabels[kCategoryCount] = {
+    "silence",
+    "unknown",
+    "marvin",
+};
+#endif
+
+#if WORDCOUNT == 9 // 9words (8 demo words + marvin hotword): yes,no,up,down,left,right,on,off,marvin
+const char* kCategoryLabels[kCategoryCount] = {
+    "silence",
+    "unknown",
+    "yes",
+    "no",
+    "up",
+    "down",
+    "left",
+    "right",
+    "on",
+    "off",
+    "marvin",
+};
+#endif
+
 #if WORDCOUNT == 2
 const char* kCategoryLabels[kCategoryCount] = {
     "silence",
@@ -24,7 +48,7 @@ const char* kCategoryLabels[kCategoryCount] = {
 };
 #endif
 
-#if WORDCOUNT == 8
+#if WORDCOUNT == 8 // Demo hotwords: yes,no,up,down,left,right,on,off
 const char* kCategoryLabels[kCategoryCount] = {
     "silence",
     "unknown",
