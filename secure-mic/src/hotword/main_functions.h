@@ -28,7 +28,7 @@ void setupHotwordRecognition(void (*log_function) (const char* s));
 // Runs one iteration of data gathering and inference. This should be called
 // repeatedly from the application code. The name needs to be loop() for Arduino
 // compatibility.
-const char* recognizeHotwords();
+const char* recognizeHotwords(uint8_t &hotword_score);
 
 #ifdef __cplusplus
 }

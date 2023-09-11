@@ -189,7 +189,7 @@ void setupHotwordRecognition(void (*log_function)(const char* s)) {
 }
 
 // The name of this function is important for Arduino compatibility.
-const char* recognizeHotwords() {
+const char* recognizeHotwords(uint8_t &hotword_score) {
 	// Fetch the spectrogram for the current time.
 	const int32_t current_time = LatestAudioTimestamp();
 	int how_many_new_slices = 0;
@@ -240,8 +240,10 @@ const char* recognizeHotwords() {
 	// ssl_client->checkConnection();
 
 	if (is_new_command) {
+		hotword_score = score;
 		return found_command;
 	} else {
+		hotword_score = 0;
 		return "";
 	}
 }

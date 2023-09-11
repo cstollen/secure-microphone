@@ -245,7 +245,8 @@ void loop() {
 	}
 
 	if (enable_hotword_recognition) {
-		const char* hotword = recognizeHotwords();
+		uint8_t score;
+		const char* hotword = recognizeHotwords(score);
 		if (hotword != "" && hotword != "silence") {
 			nlog("Hotword: ", hotword);
 			if (hotword == "up") {
