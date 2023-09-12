@@ -137,6 +137,12 @@ int write_interval = 0;
 int loop_timestamp = 0;
 int loop_interval = 0;
 
+// Audio stream end bytes
+uint8_t audio_end_bytes[4] = {0x0, 0xF, 0x0, 0xF};
+
+// Minimum hotword recognition score
+const uint8_t min_word_score = 150;
+
 // Functions
 void initPdmMic();
 void capturePdmStreamSamples();
@@ -145,6 +151,7 @@ void printRecTimings();
 void printWriteTimings();
 void sendAudio();
 void pdmCallback();
+void endAudioStream();
 
 // Hotword recognition log function
 void logFunction(const char* s) { nlog(s); }
@@ -152,10 +159,15 @@ void logFunction(const char* s) { nlog(s); }
 void loop_core1() {
 	// Heartbeat blink on second core
 	while (true) {
-		digitalWrite(LED_BUILTIN, HIGH);
-		sleep_ms(100);
-		digitalWrite(LED_BUILTIN, LOW);
-		sleep_ms(1000);
+		if (hotword_mode) {
+			digitalWrite(LED_BUILTIN, HIGH);
+			sleep_ms(100);
+			digitalWrite(LED_BUILTIN, LOW);
+			sleep_ms(900);
+		} else {
+			digitalWrite(LED_BUILTIN, HIGH);
+			sleep_ms(1000);
+		}
 	}
 }
 
@@ -250,10 +262,7 @@ void loop() {
 		if (hotword != "" && hotword != "silence") {
 			nlog("Hotword: ", hotword);
 			nlog("  Score: ", static_cast<unsigned>(score));
-			if (hotword == "up") {
-				nlog("Keyword \"up\"");
-			}
-			if (hotword == "marvin") {
+			if (hotword == "marvin" && score >= min_word_score) {
 				nlog("Keyword \"marvin\"");
 				nlog("Switching to audio streaming mode");
 				hotword_mode = false;
@@ -273,6 +282,7 @@ void loop() {
 				if ((sample_amp_max < silence_thresh)) {
 					nlog("Silent for ", silence_time_ms / 1000, " s (max amplitude of ", sample_amp_max, " under threshold of ",
 					     silence_thresh);
+					// endAudioStream();
 					nlog("Switching to hotword recognition mode");
 					hotword_mode = true;
 				}
@@ -372,6 +382,12 @@ void sendAudio() {
 		n_samples_sent += samples_available;
 		samples_available = 0;
 	}
+}
+
+void endAudioStream() {
+	nlog("End audio stream");
+	wifi_client->send(audio_end_bytes, 4);
+	// samples_available = 0;
 }
 
 // Print recording timings
