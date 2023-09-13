@@ -128,9 +128,9 @@ void save_audio() {
 			auto now = std::chrono::system_clock::now();
 			time_t local_time = std::chrono::system_clock::to_time_t(now);
 			std::stringstream file_timestamp_ss;
-			file_timestamp_ss << std::put_time(std::localtime(&local_time), "%Y%m%d-%H%M%S");
+			file_timestamp_ss << std::put_time(std::localtime(&local_time), "%Y%m%d_%H%M%S");
 			std::string file_timestamp = file_timestamp_ss.str();
-			std::string filename_wav = "audio_stream_4s" + file_timestamp + ".wav";
+			std::string filename_wav = "audio_stream_" + file_timestamp + ".wav";
 			std::cout << "Write audio to file: " << filename_wav << std::endl;
 			ip_mic_monitor.writeWav(filename_wav.c_str(), rec_buffer, rec_idx);
 			receive_mode = true;
