@@ -14,8 +14,14 @@ class IpMicMonitor {
 	bool openConnection(int port = 4444);
 	bool openSSLConnection(int port = 4444);
 	bool connected() { return m_connected; }
+	int hasPending(int16_t* sample_buffer, size_t sample_buffer_size = BUFFER_SIZE);
+	int pending(int16_t* sample_buffer, size_t sample_buffer_size = BUFFER_SIZE);
 	int receive(uint8_t* buffer, size_t buffer_size = BUFFER_SIZE);
 	int receive(int16_t* sample_buffer, size_t sample_buffer_size = BUFFER_SIZE);
+	// int hasPendingSSL();
+	// int pendingSSL();
+	int hasPendingSSL(int16_t* sample_buffer, size_t sample_buffer_size = BUFFER_SIZE);
+	int pendingSSL(int16_t* sample_buffer, size_t sample_buffer_size = BUFFER_SIZE);
 	int receiveSSL(uint8_t* buffer, size_t buffer_size = BUFFER_SIZE);
 	int receiveSSL(int16_t* sample_buffer, size_t sample_buffer_size = BUFFER_SIZE);
 	void printAudioStream(int port);

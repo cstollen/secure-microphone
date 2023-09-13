@@ -141,7 +141,7 @@ int loop_interval = 0;
 uint8_t audio_end_bytes[4] = {0x0, 0xF, 0x0, 0xF};
 
 // Minimum hotword recognition score
-const uint8_t min_word_score = 150;
+const uint8_t min_word_score = 155;
 
 // Functions
 void initPdmMic();

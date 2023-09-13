@@ -32,6 +32,11 @@ add_executable(${PROJECT_BINARY}
 )
 target_include_directories(${PROJECT_BINARY} PRIVATE ${SRC_DIR} ${OpenSSL})
 
+#### Libpthreads
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+target_link_libraries(${PROJECT_BINARY} PRIVATE Threads::Threads)
+
 #### OpenSSL
 find_package(OpenSSL REQUIRED)
 if( OPENSSL_FOUND )
@@ -40,7 +45,7 @@ if( OPENSSL_FOUND )
 	message(STATUS "OpenSSL include dir: ${OPENSSL_INCLUDE_DIR}")
 	message(STATUS "OpenSSL libraries: ${OPENSSL_LIBRARIES}")
 	target_include_directories(${PROJECT_BINARY} PRIVATE ${OPENSSL_INCLUDE_DIRS})
-	target_link_libraries(${PROJECT_BINARY} ${OPENSSL_LIBRARIES})
+	target_link_libraries(${PROJECT_BINARY} PRIVATE ${OPENSSL_LIBRARIES})
 else()
 	message(FATAL_ERROR "OpenSSL not found") 
 endif()

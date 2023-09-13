@@ -1,6 +1,7 @@
 // #include <stdio.h>
 // #include <unistd.h>
 #include <sys/socket.h>
+#include <sys/ioctl.h>
 #include <iostream>
 #include <fstream>
 #include "ip_mic_monitor.hpp"
@@ -76,6 +77,10 @@ bool IpMicMonitor::openSSLConnection(int port) {
 	std::cout << "Waiting for SSL connection on port: " << port << std::endl;
 	openConnection(port);
 
+	// // Set socket mode to non blocking
+	// unsigned long int non_block_mode = 1;
+	// int ret = ioctl(m_socket, FIONBIO, &non_block_mode);
+
 	int ssl_ret = 0;
 	// createSSLContext(m_ssl_ctx, TLS_server_method());
 	m_ssl_ctx = SSL_CTX_new(TLS_server_method());
@@ -92,6 +97,13 @@ bool IpMicMonitor::openSSLConnection(int port) {
 		std::cout << "SSL_set_fd error: " << ERR_reason_error_string(SSL_get_error(m_ssl_socket, ssl_ret)) << std::endl;
 	}
 
+	// // Set SSL mode to non blocking
+	// int set_blocking_mode_success = SSL_set_blocking_mode(m_ssl_socket, 0);
+	// if (set_blocking_mode_success < 1) {
+	// 	std::cout << "Could not set SSL blocking mode" << std::endl;
+	// 	return false;
+	// }	
+
 	SSL_set_accept_state(m_ssl_socket);
 	ssl_ret = SSL_accept(m_ssl_socket);
 	if (ssl_ret < 1) {
@@ -101,6 +113,23 @@ bool IpMicMonitor::openSSLConnection(int port) {
 		std::cout << "Accepted SSL connection on port " << port << std::endl;
 		return true;
 	}
+}
+
+int IpMicMonitor::hasPending(int16_t* sample_buffer, size_t sample_buffer_size) {
+	int bytes_pending = pending(sample_buffer, sample_buffer_size);
+	if (bytes_pending > 0) {
+		return 1;
+	} else {
+		return 0;
+	}
+}
+
+int IpMicMonitor::pending(int16_t* sample_buffer, size_t sample_buffer_size) {
+	uint8_t* sample_buffer_bytes_ptr = reinterpret_cast<uint8_t*>(sample_buffer);
+	int sample_buffer_bytes_size = sample_buffer_size * 2;
+	// int bytes_read = receive(sample_buffer_bytes_ptr, sample_buffer_size * sizeof(int16_t));
+	int bytes_pending = recv(m_socket, sample_buffer_bytes_ptr, sample_buffer_bytes_size, MSG_PEEK | MSG_DONTWAIT);
+	return bytes_pending;
 }
 
 int IpMicMonitor::receive(uint8_t* buffer, size_t buffer_size) {
@@ -122,6 +151,29 @@ int IpMicMonitor::receive(int16_t* sample_buffer, size_t sample_buffer_size) {
 	// 	sample_buffer[i] = ntohs(sample_buffer[i]);
 	// }
 	return samples_read;
+}
+
+// int IpMicMonitor::hasPendingSSL() {
+// 	return SSL_has_pending(m_ssl_socket);
+// }
+
+// int IpMicMonitor::pendingSSL() {
+// 	return SSL_pending(m_ssl_socket);
+// }
+
+int IpMicMonitor::hasPendingSSL(int16_t* sample_buffer, size_t sample_buffer_size) {
+	int bytes_pending = pendingSSL(sample_buffer, sample_buffer_size);
+	if (bytes_pending > 0) {
+		return 1;
+	} else {
+		return 0;
+	}
+}
+
+int IpMicMonitor::pendingSSL(int16_t* sample_buffer, size_t sample_buffer_size) {
+	uint8_t* sample_buffer_bytes_ptr = reinterpret_cast<uint8_t*>(sample_buffer);
+	int sample_buffer_bytes_size = sample_buffer_size * 2;
+	return SSL_peek(m_ssl_socket, sample_buffer_bytes_ptr, sample_buffer_bytes_size);
 }
 
 int IpMicMonitor::receiveSSL(uint8_t* buffer, size_t buffer_size) {
