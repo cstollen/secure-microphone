@@ -90,6 +90,9 @@ const bool enable_serial_connection_wait = false;
 const bool enable_remote_logging = true;
 const bool enable_serial_logging = true;
 
+// WiFi connection status
+bool wifi_connected = false;
+
 // Server connection status
 bool server_connected = false;
 
@@ -158,7 +161,23 @@ void logFunction(const char* s) { nlog(s); }
 
 void loop_core1() {
 	// Heartbeat blink on second core
-	while (true) {
+	while (!wifi_connected) {
+		digitalWrite(LED_BUILTIN, HIGH);
+		sleep_ms(100);
+		digitalWrite(LED_BUILTIN, LOW);
+		sleep_ms(400);
+	}
+	while (!server_connected) {
+		digitalWrite(LED_BUILTIN, HIGH);
+		sleep_ms(100);
+		digitalWrite(LED_BUILTIN, LOW);
+		sleep_ms(200);
+		digitalWrite(LED_BUILTIN, HIGH);
+		sleep_ms(100);
+		digitalWrite(LED_BUILTIN, LOW);
+		sleep_ms(600);
+	}
+	while (server_connected) {
 		if (hotword_mode) {
 			digitalWrite(LED_BUILTIN, HIGH);
 			sleep_ms(100);
@@ -212,6 +231,7 @@ void setup() {
 			delay(2000);
 		}
 	}
+	wifi_connected = true;
 
 	// Connect network logger
 	if (netlog_ssl) {

@@ -92,8 +92,20 @@ It is based on the [Arduino microphone example](https://docs.arduino.cc/tutorial
 
 ## Usage
 - The currently used model includes the 9 words: "yes", "no", "up", "down", "left", "right", "on", "off", "Marvin"
-- The hotword *Marvin* is used for starting the audio stream.
+- The hotword *Marvin* is used for starting the audio stream receive mode.
 - After one minute of silence the microphone switches back to hotword recognition mode.
+- Maximal recording time is set to 30 seconds
+- Audio is saved to .wav file in the current directory with a timestamp as filename 
+
+## LED Status Information
+| LED           | Status                         |
+|---------------|--------------------------------|
+| off           | flashing or error state        |
+| fast blink    | waiting for WiFi connection    |
+| double blink  | waiting for SSL/TLS connection |
+| blink         | hotword recognition mode       |
+| on            | transmitting audio stream      |
+
 
 ## Appendix
 ### Serial Monitor
