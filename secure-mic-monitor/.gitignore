@@ -1,6 +1,6 @@
-.vscode
-build
-config/config.ini
-cert/*.pem
+/.vscode
+/build
+/config/config.ini
+/cert
 /audio_stream_*
 

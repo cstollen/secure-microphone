@@ -1,7 +1,7 @@
-.pio
-.vscode
-build
-tools
-config/config.ini
-cert/**
-bak/**
+/.pio
+/.vscode
+/build
+/tools
+/config/config.ini
+/cert/**
+*_bak
