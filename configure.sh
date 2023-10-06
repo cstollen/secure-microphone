@@ -1,15 +1,14 @@
 #! /bin/bash
 
-if [[ ! -f "configure.sh" ]]; then
-  echo "Execute config script from project root folder"
-  exit 1
-fi
+SCRIPT=$(realpath "$0")
+SCRIPT_DIR=$(dirname "$SCRIPT")
+PROJECT_DIR=$SCRIPT_DIR
 
-PROJECT_DIR=$PWD
 MIC_RP2040_DIR=secure-mic
 MIC_MONITOR_DIR=secure-mic-monitor
 NETLOG_MONITOR_DIR=netlog-monitor
 FWUPLOADER_URL=https://github.com/arduino/arduino-fwuploader/releases/download/2.2.0/arduino-fwuploader_2.2.0_Linux_64bit.tar.gz
+UART_DEVICE=/dev/ttyACM0
 
 if [[ ! -f "$MIC_RP2040_DIR/config/config.ini" ]]; then
 	cp "$MIC_RP2040_DIR/config/config-template.ini" "$MIC_RP2040_DIR/config/config.ini"
@@ -52,7 +51,7 @@ if [[ ! -f "ssl-cert.pem" ]] || [[ ! -f "ssl-key.pem" ]]; then
 	cd ..
 	echo ""
 	echo "Uploading certificate to microcontroller"
-	tools/arduino-fwuploader/arduino-fwuploader certificates flash --file cert/ssl-cert.pem -b arduino:mbed_nano:nanorp2040connect -a /dev/ttyACM0
+	tools/arduino-fwuploader/arduino-fwuploader certificates flash --file cert/ssl-cert.pem -b arduino:mbed_nano:nanorp2040connect -a $UART_DEVICE
 fi
 
 cd $PROJECT_DIR

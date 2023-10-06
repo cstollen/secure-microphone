@@ -1,16 +1,15 @@
 #! /bin/bash
 
-if [[ ! -f "build-all.sh" ]]; then
-  echo "Execute script from project root folder"
-  exit 1
-fi
+SCRIPT=$(realpath "$0")
+SCRIPT_DIR=$(dirname "$SCRIPT")
+PROJECT_DIR=$SCRIPT_DIR
 
-PROJECT_DIR=$PWD
 MIC_RP2040_DIR=secure-mic
 MIC_MONITOR_DIR=secure-mic-monitor
 NETLOG_MONITOR_DIR=netlog-monitor
 
 # Configure
+cd $PROJECT_DIR
 echo ""
 ./configure.sh
 

@@ -1,11 +1,8 @@
 #! /bin/bash
 
-if [[ ! -f "build-all.sh" ]]; then
-  echo "Execute script from project root folder"
-  exit 1
-fi
-
-PROJECT_DIR=$PWD
+SCRIPT=$(realpath "$0")
+SCRIPT_DIR=$(dirname "$SCRIPT")
+PROJECT_DIR=$SCRIPT_DIR
 
 check_install_package () {
 	REQUIRED_PKG="$1"
@@ -21,8 +18,8 @@ check_install_package () {
 
 PIO_CMD_PATH=$(which pio)
 OPENSSL_CMD_PATH=$(which openssl)
-MIC_RP2040_DIR=secure-mic
-FWUPLOADER_DIR="$MIC_RP2040_DIR/tools/arduino-fwuploader"
+MIC_RP2040_DIR=$(realpath secure-mic)
+FWUPLOADER_DIR=$MIC_RP2040_DIR/tools/arduino-fwuploader
 FWUPLOADER_URL=https://github.com/arduino/arduino-fwuploader/releases/download/2.2.0/arduino-fwuploader_2.2.0_Linux_64bit.tar.gz
 
 if [[ $PIO_CMD_PATH == "" ]]; then
@@ -46,22 +43,22 @@ fi
 if [[ ! -f $FWUPLOADER_DIR/arduino-fwuploader ]]; then
 	echo "Arduino firmware uploader executable not found"
 	echo "Installing arduino firmware uploader into tools folder"
-	if [[ ! -d "$MIC_RP2040_DIR/tools" ]]; then
-  	mkdir -p $MIC_RP2040_DIR/tools
+	if [[ ! -d "$FWUPLOADER_DIR" ]]; then
+		mkdir -p $FWUPLOADER_DIR
 	fi
-	if [[ ! -f "$MIC_RP2040_DIR/tools/arduino-fwuploader/arduino-fwuploader_2.2.0_Linux_64bit.tar.gz" ]]; then
-		cd $MIC_RP2040_DIR/tools
-		if [[ ! -d "$MIC_RP2040_DIR/arduino-fwuploader" ]]; then
-			mkdir -p $MIC_RP2040_DIR/arduino-fwuploader
-		fi
+	if [[ ! -f "$FWUPLOADER_DIR/arduino-fwuploader_2.2.0_Linux_64bit.tar.gz" ]]; then
+		# cd $MIC_RP2040_DIR/tools
+		# if [[ ! -d "$MIC_RP2040_DIR/arduino-fwuploader" ]]; then
+		# 	mkdir -p $MIC_RP2040_DIR/arduino-fwuploader
+		# fi
 		cd $FWUPLOADER_DIR
 		wget $FWUPLOADER_URL
 		cd $PROJECT_DIR
 	fi
 	if [[ ! -f $FWUPLOADER_DIR/arduino-fwuploader ]]; then
 		cd $FWUPLOADER_DIR
-  	tar -xzf arduino-fwuploader_2.2.0_Linux_64bit.tar.gz
-  	cd $PROJECT_DIR
+		tar -xzf arduino-fwuploader_2.2.0_Linux_64bit.tar.gz
+		cd $PROJECT_DIR
 	fi
 else
 	echo "Found arduino firmware uploader executable: $FWUPLOADER_DIR/arduino-fwuploader"
