@@ -3,12 +3,13 @@ This project enables an Arduino Nano RP2040 Connect to recognize hotwords and se
 It is based on the [Arduino microphone example](https://docs.arduino.cc/tutorials/nano-rp2040-connect/rp2040-microphone-basics) and the [Tensorflow micro speech example](https://github.com/tensorflow/tflite-micro/tree/main/tensorflow/lite/micro/examples/micro_speech).
 
 ## Quick Start (tl;dr)
-1. Install dependencies
+1. Install dependencies  
   `$ ./install-dependencies.sh`
 2. Run configuration script to generate config files  
   `$ ./configure.sh`
-3. Set WiFi credentials and host URL in config file `secure-mic/config/config.ini`
-4. Rerun configuration script
+3. Set WiFi credentials and host URL in config file  
+  `$ nano secure-mic/config/config.ini`
+4. Rerun configuration script  
   `$ ./configure.sh`
 5. Build project  
   `$ ./build-all.sh`
@@ -38,7 +39,7 @@ It is based on the [Arduino microphone example](https://docs.arduino.cc/tutorial
   - [OpenSSL](https://www.openssl.org) 1.1.1f  
 
 ## Install dependencies
-- Run install script
+- Run install script  
   `$ ./install-dependencies.sh`
 - Script installs
   - Ubuntu packages with apt
@@ -64,9 +65,11 @@ It is based on the [Arduino microphone example](https://docs.arduino.cc/tutorial
         - Microphone: 55555 (TCP)
         - Network logger: 4444 (UDP)
       - Important: The microcontroller only connects to the set host, because the URL gets embedded in the SSL certificate
-  - Edit microphone monitor config file `./secure-mic-monitor/config/config.ini`
+  - Edit microphone monitor config file  
+    `$ nano ./secure-mic-monitor/config/config.ini`
     - Just needed if port differs from the default (55555)
-  - Edit network logger config file `./secure-mic-monitor/config/config.ini`
+  - Edit network logger config file  
+    `$ nano ./secure-mic-monitor/config/config.ini`
     - Just needed if port differs from the default (4444)
   - Change the variable `UART_DEVICE` in the `configure.sh` script if the UART device path for the microcontroller differs from `/dev/ttyACM0`
   - Rerun the config script to generate SSL certificates based on the set configuration and upload them to the microcontroller  
@@ -109,13 +112,13 @@ It is based on the [Arduino microphone example](https://docs.arduino.cc/tutorial
 
 ## Appendix
 ### Serial Monitor
+- Fallback for wired UART over USB connection when the wireless logging does not work
 - A simple serial monitor using `cat` can be run to get the output of the hotword recognition:  
   `$ cat /dev/ttyACM0`  
-- The device has initialized, when the onboard LED lights up and it is waiting for a serial connection to resume.  
-- The output consists of the recognized word, a score and the time since the start of the device.  
+  - Modify if UART over USB device path differs
 
 ### Changing Microphone Settings
-- Important changeable parameters can be found in `secure-ip-mic-rp2040/src/hotword/config.h` including microphone and recognition configuration.
+- Important changeable parameters can be found in `secure-mic/src/hotword/config.h` including microphone and recognition configuration.
 
 ### Loading Test Data
 - To load testdata instead of using the microphone, uncomment `#define LOADDATA` in `secure-mic/src/hotword/audio_provider.cpp`.  
