@@ -136,13 +136,21 @@ It is based on the [Arduino microphone example](https://docs.arduino.cc/tutorial
   - Modify `kCategoryLabels` variable in `micro_model_settings.cpp` in project folder `secure-mic/src/hotword`
 
 #### Model Performance
-8 words (3915 test samples):  
-- Float model:  
-  - Size: 164068 bytes  
-  - Accuracy: 76.653895%  
-- Quantized model:  
-  - Size: 42736 bytes  
-  - Accuracy: 76.704981%
+8 words (3915 test samples):
+- Float model
+  - Size: 164068 bytes
+  - Accuracy: 76.653895 %
+- Quantized model
+  - Size: 42736 bytes
+  - Accuracy: 76.704981 %
+
+9 words (4080 test samples):
+- Float model
+  - Size: 180068 bytes
+  - Accuracy: 79.264706 %
+- Quantized model
+  - Size: 46736 bytes
+  - Accuracy: 79.166667 %
 
 ### Links
 [Arduino microphone example](https://docs.arduino.cc/tutorials/nano-rp2040-connect/rp2040-microphone-basics)
