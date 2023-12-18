@@ -1,5 +1,8 @@
 .vscode
 .pio
 build
+bak
 *_bak
 *.wav
+*.dat
+*.bin
