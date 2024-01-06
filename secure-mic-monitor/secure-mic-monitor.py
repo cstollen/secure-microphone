@@ -10,8 +10,10 @@ import struct
 
 HOST= "0.0.0.0"
 PORT = 55555
-CERT_FILE = "cert/tls-cert-hoegarden.pem"
-KEY_FILE = "cert/tls-key-hoegarden.pem"
+#CERT_FILE = "cert/tls-cert-hoegarden.pem"
+#KEY_FILE = "cert/tls-key-hoegarden.pem"
+CERT_FILE = "cert/ssl-cert.pem"
+KEY_FILE = "cert/ssl-key.pem"
 SOCKET_BUFFER_SIZE = 255
 
 # https://docs.python.org/3/library/socket.html#socket.socket.listen

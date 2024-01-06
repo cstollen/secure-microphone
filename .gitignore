@@ -6,3 +6,4 @@ bak
 *.wav
 *.dat
 *.bin
+/venv
